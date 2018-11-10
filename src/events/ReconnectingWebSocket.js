@@ -120,7 +120,10 @@ export default class ReconnectingWebSocket extends events.EventEmitter {
 
       const handleConnectError = err => {
         debug("connection attempt failed", err);
-        this.emit("error", { err, reconnect: this._reconnect, numRetries })
+        try {
+          this.emit("error", {err, reconnect: this._reconnect, numRetries});
+        }
+        catch (e) {}
         if (!this._reconnect) {
           callback(err);
           return;
